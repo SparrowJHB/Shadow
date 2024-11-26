@@ -55,6 +55,19 @@ android {
     aaptOptions {
         additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
     }
+
+    applicationVariants.configureEach { variant ->
+        variant.assembleProvider.configure() {
+            it.doLast{
+                variant.outputs.forEach  { file  ->
+                    copy {
+                        from file.outputFile
+                        into new File(project.buildDir,"outputs/apk/${file.name}")
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -74,7 +87,8 @@ preBuild.dependsOn(":sample-host-lib:jarDebugPackage")
 
 
 def createDuplicateApkTask(buildType) {
-    def apkDir = file("${getBuildDir()}/outputs/apk/plugin/$buildType")
+//    def apkDir = file("${getBuildDir()}/outputs/apk/plugin/$buildType")
+    def apkDir = file("${getBuildDir()}/intermediates/apk/plugin/$buildType")
 
     return tasks.create("duplicatePlugin${buildType.capitalize()}ApkTask", Copy) {
         group = 'build'
@@ -115,7 +129,8 @@ shadow {
                         businessName = 'sample-plugin-app'
                         partKey = 'sample-plugin-app'
                         buildTask = ':sample-app:assemblePluginDebug'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/debug/sample-app-plugin-debug.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/debug/sample-app-plugin-debug.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/intermediates/apk/plugin/debug/sample-app-plugin-debug.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         dependsOn = ['sample-base']
                     }
@@ -123,7 +138,8 @@ shadow {
                         businessName = 'sample-plugin-app2'
                         partKey = 'sample-plugin-app2'
                         buildTask = ':sample-app:assemblePluginDebug'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/debug/sample-app-plugin-debug2.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/debug/sample-app-plugin-debug2.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/intermediates/apk/plugin/debug/sample-app-plugin-debug2.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         dependsOn = ['sample-base']
                     }
@@ -131,7 +147,8 @@ shadow {
                         businessName = 'sample-plugin-app'
                         partKey = 'sample-base'
                         buildTask = ':sample-base:assemblePluginDebug'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/outputs/apk/plugin/debug/sample-base-plugin-debug.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/outputs/apk/plugin/debug/sample-base-plugin-debug.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/intermediates/apk/plugin/debug/sample-base-plugin-debug.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }
@@ -145,7 +162,8 @@ shadow {
                         businessName = 'sample-plugin-app'
                         partKey = 'sample-plugin-app'
                         buildTask = ':sample-app:assemblePluginRelease'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/release/sample-app-plugin-release.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/release/sample-app-plugin-release.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/intermediates/apk/plugin/release/sample-app-plugin-release.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         dependsOn = ['sample-base']
                     }
@@ -153,7 +171,8 @@ shadow {
                         businessName = 'sample-plugin-app2'
                         partKey = 'sample-plugin-app2'
                         buildTask = ':sample-app:assemblePluginRelease'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/release/sample-app-plugin-release2.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/outputs/apk/plugin/release/sample-app-plugin-release2.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-app/build/intermediates/apk/plugin/release/sample-app-plugin-release2.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                         dependsOn = ['sample-base']
                     }
@@ -161,7 +180,8 @@ shadow {
                         businessName = 'sample-plugin-app'
                         partKey = 'sample-base'
                         buildTask = ':sample-base:assemblePluginRelease'
-                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/outputs/apk/plugin/release/sample-base-plugin-release.apk'
+//                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/outputs/apk/plugin/release/sample-base-plugin-release.apk'
+                        apkPath = 'projects/sample/source/sample-plugin/sample-base/build/intermediates/apk/plugin/release/sample-base-plugin-release.apk'
                         hostWhiteList = ["com.tencent.shadow.sample.host.lib"]
                     }
                 }

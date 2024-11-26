@@ -26,6 +26,18 @@ android {
     lintOptions {
         abortOnError false
     }
+    applicationVariants.configureEach { variant ->
+        variant.assembleProvider.configure() {
+            it.doLast{
+                variant.outputs.forEach  { file  ->
+                    copy {
+                        from file.outputFile
+                        into new File(project.buildDir,"outputs/apk/${file.name}")
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
